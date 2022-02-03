@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:login_with_sharedpreference/loginpage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -20,8 +21,12 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  void signOut(BuildContext ctx) async {
-    Navigator.of(ctx).pushReplacement(
-        MaterialPageRoute(builder: (context) => ScreenLogin()));
+   signOut(BuildContext ctx) async {
+    
+     final _sharedPrefs = await SharedPreferences.getInstance();
+     await _sharedPrefs.clear();
+
+    Navigator.of(ctx).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (ctx) => LoginPage()), (route) => false);
   }
 }

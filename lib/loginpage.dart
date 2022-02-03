@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:login_with_sharedpreference/homepage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class ScreenLogin extends StatelessWidget {
-  ScreenLogin({Key? key}) : super(key: key);
+import 'main.dart';
+
+class LoginPage extends StatelessWidget {
+  LoginPage({Key? key}) : super(key: key);
 
   // email and password textediting controller
   final TextEditingController _emailController = TextEditingController();
@@ -78,7 +81,7 @@ class ScreenLogin extends StatelessWidget {
                   ),
                   const SizedBox(height: 16.0),
                   ElevatedButton(
-                    child: Text('Login'),
+                    child: const Text('Login'),
                     onPressed: () {
                       signIn(context);
                     },
@@ -93,10 +96,11 @@ class ScreenLogin extends StatelessWidget {
   }
 
   // login function
-  void signIn(BuildContext ctx) async {
-    final email = _emailController.text;
-    final password = _passwordController.text;
+   signIn(BuildContext ctx) async {
     if (_formKey.currentState!.validate()) {
+      final _sharedPrefs = await SharedPreferences.getInstance();
+      await _sharedPrefs.setBool(SAVE_KEY_NAME, true);
+
       Navigator.of(ctx)
           .pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
     }
